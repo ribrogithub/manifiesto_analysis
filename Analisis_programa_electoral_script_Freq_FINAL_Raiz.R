@@ -1,39 +1,39 @@
 #------------------------------------------------#
 
-# Cargamos librer韆s.
+# Cargamos librer铆as.
 library(NLP)
 library(stringr)
 library(tm)
 
-# Seleccionamos el directorio de trabajo donde est醤 los programas electorales.
+# Seleccionamos el directorio de trabajo donde est谩n los programas electorales.
 setwd("C:/Users/rbroca/Documents/R/Politico")
 
 # Cargamos el archivo TXT.
-Programa <- readLines("Ciudadanos_2019.txt")
+Programa <- readLines("PSOE_2019.txt")
 
 # Convertimos el objeto anterior en matriz.
 Programa_matriz <- Programa %>% as.matrix()
 
-# Transformaci髇 y preparaci髇 del texto.
+# Transformaci贸n y preparaci贸n del texto.
 Programa_editado <- gsub("[[:cntrl:]]", " ", Programa_matriz)# Eliminamos caracteres de control, como ".
-Programa_editado <- tolower(Programa_editado)# Todo a min鷖culas.
-Programa_editado <- removeWords(Programa_editado, words = stopwords("spanish")) # Eliminar palabras vac韆s.
-Programa_editado <- removePunctuation(Programa_editado) # Elimina los signos de puntuaci髇.
-Programa_editado <- removeNumbers(Programa_editado) # Elimina los n鷐eros.
+Programa_editado <- tolower(Programa_editado)# Todo a min煤sculas.
+Programa_editado <- removeWords(Programa_editado, words = stopwords("spanish")) # Eliminar palabras vac铆as.
+Programa_editado <- removePunctuation(Programa_editado) # Elimina los signos de puntuaci贸n.
+Programa_editado <- removeNumbers(Programa_editado) # Elimina los n煤meros.
 Programa_editado <- stripWhitespace(Programa_editado) # Elimina los espacios superfluos.
 
-# Creaci髇 del corpus de palabras.
+# Creaci贸n del corpus de palabras.
 Programa_corpus_palabra <- SimpleCorpus(VectorSource(Programa_editado))
 
-# Ra韟 l閤ica y  corpus de lemas.
+# Ra铆z l茅xica y  corpus de lemas.
 Programa_editado_Raiz <- stemDocument(Programa_editado, language="spanish")# Radicalizar las palabras
 Programa_corpus_Raiz <- SimpleCorpus(VectorSource(Programa_editado_Raiz))
 
-# Creaci髇 del TDM_palabra y TDM_lema.
+# Creaci贸n del TDM_palabra y TDM_lema.
 Programa_tdm_palabra <- TermDocumentMatrix(Programa_corpus_palabra)
 Programa_tdm_Raiz <- TermDocumentMatrix(Programa_corpus_Raiz)
 
-# C醠culo de frecuencias.
+# C谩lculo de frecuencias.
   # Frecuencia de cada Palabra.
 Programa_tdm_matriz_pal <- as.matrix(Programa_tdm_palabra)
 Freq_Lexico_pal <- data.frame(Lexico = rownames(Programa_tdm_matriz_pal), 
@@ -46,5 +46,5 @@ Freq_Lexico_Raiz <- data.frame(Lexico = rownames(Programa_tdm_matriz_Raiz),
                           row.names = NULL)
 
 # Creamos un archivo csv para guardar el resultado de las frecuencias.
-write.csv(Freq_Lexico_pal, file = "Ciudadanos_2019_Freq_Pal34.csv")
-write.csv(Freq_Lexico_Raiz, file = "Ciudadanos_2019_Freq_Lem34.csv")
+write.csv(Freq_Lexico_pal, file = "PSOE_2019_Freq_Pal.csv")
+write.csv(Freq_Lexico_Raiz, file = "PSOE_2019_Freq_Lem.csv")
